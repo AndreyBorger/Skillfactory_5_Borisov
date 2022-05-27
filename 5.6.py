@@ -2,8 +2,7 @@ A = [[' ', '0', '1', '2'],
      ['0', '-', '-', '-'],
      ['1', '-', '-', '-'],
      ['2', '-', '-', '-']
-     ]
-
+    ]
 
 # функция отрисовки игрового поля
 def draw_matrix(A):
@@ -15,8 +14,7 @@ def draw_matrix(A):
 
 
 # функция проверки выигрыша
-def check_win(draw_matrix):
-    c = True
+def check_win():
     if ((A[1][1] == '0' and A[1][2] == '0' and A[1][3] == '0')
             or (A[2][1] == '0' and A[2][2] == '0' and A[2][3] == '0')
             or (A[3][1] == '0' and A[3][2] == '0' and A[3][3] == '0')
@@ -25,8 +23,8 @@ def check_win(draw_matrix):
             or (A[1][3] == '0' and A[2][3] == '0' and A[3][3] == '0')
             or (A[1][1] == '0' and A[2][2] == '0' and A[3][3] == '0')
             or (A[1][3] == '0' and A[2][2] == '0' and A[3][1] == '0')):
-        c = 0
         print('ВЫИГРАЛ "0"')
+        return 0
 
     if ((A[1][1] == 'x' and A[1][2] == 'x' and A[1][3] == 'x')
             or (A[2][1] == 'x' and A[2][2] == 'x' and A[2][3] == 'x')
@@ -37,20 +35,20 @@ def check_win(draw_matrix):
             or (A[1][1] == 'x' and A[2][2] == 'x' and A[3][3] == 'x')
             or (A[1][3] == 'x' and A[2][2] == 'x' and A[3][1] == 'x')):
         print('ВЫИГРАЛ "x"')
-        c = 0
+        return  0
+
     if (A[1][1] != '-' and A[1][2] != '-' and A[1][3] != '-' and
             A[2][1] != '-' and A[2][2] != '-' and A[2][3] != '-' and
-            A[3][1] != '-' and A[3][2] != '-' and A[3][3] != '-' and c != 0):
+            A[3][1] != '-' and A[3][2] != '-' and A[3][3] != '-'):
         print('НИЧЬЯ!')
-        c = 0
-
-    return (c)
+        return 0
 
 # цикл ходов
-count = 0
-while check_win(draw_matrix(A)) != 0:
-    count += 1
-    if count % 2 == 0:
+turn = 'x'
+draw_matrix(A)
+
+while True:
+    if turn == '0':
         print('---------------------')
         print()
         print('ХОДИТ "0"')
@@ -58,9 +56,12 @@ while check_win(draw_matrix(A)) != 0:
         x = int(input('введите координату x:'))
         if A[y + 1][x + 1] == '-':
             A[y + 1][x + 1] = '0'
+            draw_matrix(A)
+            if check_win() == 0: break
+            turn = 'x'
         else:
             print('Неверный ход!')
-    if count % 2 != 0:
+    if turn == 'x':
         print('---------------------')
         print()
         print('ХОДИТ "Х"')
@@ -68,6 +69,9 @@ while check_win(draw_matrix(A)) != 0:
         x = int(input('введите координату x:'))
         if A[y + 1][x + 1] == '-':
             A[y + 1][x + 1] = 'x'
+            draw_matrix(A)
+            if check_win() == 0: break
+            turn = '0'
         else:
             print('Неверный ход!')
 
